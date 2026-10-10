@@ -1,19 +1,19 @@
-# 🏦 Documentación Oficial del Proyecto: Mi Plata (Simulador Bancario)
+#  Documentación Oficial del Proyecto: Mi Plata (Simulador Bancario)
 
-## 📋 Información General
+## Información General
 - **Proyecto:** Mi Plata - Sistema de Gestión Bancaria Académica
 - **Nivel:** Técnica Laboral en Desarrollo de Software (3.er Semestre)
 - **Repositorio:** [GitHub - Mi Plata](https://github.com/tu-usuario/mi-plata)
 
 ---
 
-## 🎨 1. Maquetación / Wireframe Responsivo
+## 1. Maquetación / Wireframe Responsivo
 El diseño de la interfaz sigue un enfoque adaptativo (*Responsive Web Design*) estructurado para las resoluciones estándar solicitadas:
 - **Desktop / Laptop:** 1920px
 - **Tablet:** 786px
 - **Smartphone:** 460px
 
-### 🖼️ Maqueta HTML/CSS Interactiva de Demostración
+### Maqueta HTML/CSS Interactiva de Demostración
 ```html
 <!DOCTYPE html>
 <html lang="es">
@@ -66,7 +66,7 @@ El diseño de la interfaz sigue un enfoque adaptativo (*Responsive Web Design*) 
 
 ---
 
-## 📊 2. Diagrama UML de Clases
+## 2. Diagrama UML de Clases
 
 A continuación se representa la arquitectura POO del sistema en formato Mermaid.
 
@@ -133,7 +133,7 @@ classDiagram
 
 ---
 
-## 👥 3. Roles del Equipo de Desarrollo
+## 3. Roles del Equipo de Desarrollo
 
 | Rol | Integrante | Responsabilidades Principales |
 | :--- | :--- | :--- |
@@ -144,7 +144,7 @@ classDiagram
 
 ---
 
-## 📝 4. Historias de Usuario (User Stories)
+## 4. Historias de Usuario (User Stories)
 
 ### HU-01: Registro e Inicio de Sesión Seguro
 - **Como:** Cliente del banco.
