@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Plata - Sistema Bancario</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <!-- ENCABEZADO Y NAVEGACIÓN -->
+    <header class="header-corporativo">
+        <div class="logo-container">
+            <h1>Mi Plata</h1>
+            <span class="badge-academico">Simulador Académico</span>
+        </div>
+        <nav id="nav-publico" class="nav-menu">
+            <button onclick="app.mostrarVista('vista-inicio')" class="btn-nav">Inicio</button>
+            <button onclick="app.mostrarVista('vista-login')" class="btn-nav btn-outline">Iniciar Sesión</button>
+            <button onclick="app.mostrarVista('vista-registro')" class="btn-nav btn-primary">Registrarse</button>
+        </nav>
+        <nav id="nav-privado" class="nav-menu oculto">
+            <span id="saludo-usuario" class="saludo">Hola, Usuario</span>
+            <button onclick="app.mostrarVista('vista-inicio')" class="btn-nav btn-outline">Volver al Inicio</button>
+            <button onclick="app.cerrarSesion()" class="btn-nav btn-danger">Cerrar Sesión</button>
+        </nav>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL DE VISTAS -->
+    <main class="main-container">
+
+        <!-- VISTA 1: INICIO / INSTITUCIONAL -->
+        <section id="vista-inicio" class="vista">
+            <div class="hero">
+                <h2>Bienvenido a tu sucursal virtual Mi Plata</h2>
+                <p>La plataforma académica segura y confiable para gestionar tus ahorros, cuentas corrientes y tarjetas de crédito de forma sencilla.</p>
+                <div class="hero-actions">
+                    <button onclick="app.mostrarVista('vista-registro')" class="btn btn-primary btn-grande">Abrir una cuenta gratis</button>
+                    <button onclick="app.mostrarVista('vista-login')" class="btn btn-secundario btn-grande">Ingresar a mi cuenta</button>
+                </div>
+            </div>
+            <div class="servicios-grid">
+                <div class="card-servicio">
+                    <h3>Cuenta de Ahorros</h3>
+                    <p>Rentabilidad del 1,5% mensual aplicada al momento de realizar tus retiros con total seguridad.</p>
+                </div>
+                <div class="card-servicio">
+                    <h3>Cuenta Corriente</h3>
+                    <p>Flexibilidad financiera con un cupo de sobregiro autorizado de hasta el 20% de tu saldo actual.</p>
+                </div>
+                <div class="card-servicio">
+                    <h3>Tarjeta de Crédito</h3>
+                    <p>Financia tus compras de 1 a más cuotas con tasas preferenciales y cálculo automático de cuotas mensuales.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA 2: REGISTRO -->
+        <section id="vista-registro" class="vista oculto">
+            <div class="form-card">
+                <h2>Registro de Nuevo Cliente</h2>
+                <p>Completa tus datos para crear tus productos de demostración.</p>
+                <form id="form-registro" onsubmit="app.registrarCliente(event)">
+                    <div class="form-group">
+                        <label for="reg-id">Número de Identificación:</label>
+                        <input type="text" id="reg-id" required placeholder="Ej: 10203040">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-nombre">Nombre Completo:</label>
+                        <input type="text" id="reg-nombre" required placeholder="Ej: Mateo Quiñones">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-celular">Número de Celular:</label>
+                        <input type="tel" id="reg-celular" required placeholder="Ej: 3001234567">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-usuario">Nombre de Usuario (Único):</label>
+                        <input type="text" id="reg-usuario" required placeholder="Ej: mquinones">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Contraseña:</label>
+                        <input type="password" id="reg-password" required placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password-confirm">Confirmar Contraseña:</label>
+                        <input type="password" id="reg-password-confirm" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Registrarse y Crear Productos</button>
+                </form>
+                <p class="form-footer">¿Ya tienes cuenta? <a href="#" onclick="app.mostrarVista('vista-login')">Inicia sesión aquí</a></p>
+                <div class="text-center" style="margin-top: 15px;">
+                    <button onclick="app.mostrarVista('vista-inicio')" class="btn btn-outline" style="color: var(--azul-corporativo); border-color: var(--borde-color);">← Volver a la página principal</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA 3: INICIO DE SESIÓN -->
+        <section id="vista-login" class="vista oculto">
+            <div class="form-card">
+                <h2>Iniciar Sesión</h2>
+                <p>Ingresa tus credenciales para acceder a tu panel bancario.</p>
+                <form id="form-login" onsubmit="app.iniciarSesion(event)">
+                    <div class="form-group">
+                        <label for="login-usuario">Usuario:</label>
+                        <input type="text" id="login-usuario" required placeholder="Tu nombre de usuario">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Contraseña:</label>
+                        <input type="password" id="login-password" required placeholder="Tu contraseña">
+                    </div>
+                    <div id="mensaje-intentos" class="alerta alerta-advertencia oculto"></div>
+                    <button type="submit" class="btn btn-primary btn-full" id="btn-login-submit">Ingresar</button>
+                </form>
+                <p class="form-footer">¿No estás registrado? <a href="#" onclick="app.mostrarVista('vista-registro')">Regístrate aquí</a></p>
+                <div class="text-center" style="margin-top: 15px;">
+                    <button onclick="app.mostrarVista('vista-inicio')" class="btn btn-outline" style="color: var(--azul-corporativo); border-color: var(--borde-color);">← Volver a la página principal</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA 4: PANEL DEL CLIENTE (BANCARIO) -->
+        <section id="vista-panel" class="vista oculto">
+            <div class="panel-layout">
+                <!-- Barra lateral de productos y navegación interna -->
+                <aside class="panel-sidebar">
+                    <h3>Mis Productos</h3>
+                    <div id="selector-productos" class="lista-productos-sidebar">
+                        <!-- Se llena dinámicamente -->
+                    </div>
+                    <hr class="separator">
+                    <div class="menu-acciones-rapidas">
+                        <button onclick="app.abrirModal('modal-perfil')" class="btn btn-secundario btn-full btn-sm">Editar Perfil</button>
+                        <button onclick="app.abrirModal('modal-password')" class="btn btn-secundario btn-full btn-sm">Cambiar Contraseña</button>
+                        <button onclick="app.abrirModal('modal-admin')" class="btn btn-outline btn-full btn-sm" style="color: var(--azul-corporativo); border-color: var(--borde-color);">Gestión de Usuarios (CRUD)</button>
+                    </div>
+                </aside>
+
+                <!-- Contenido principal del producto seleccionado -->
+                <div class="panel-content">
+                    <div class="card-producto-detalle">
+                        <div class="header-producto-info">
+                            <div>
+                                <h3 id="det-tipo-producto">Seleccione un producto</h3>
+                                <p id="det-id-producto" class="text-muted">ID: ---</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="label-saldo">Saldo / Cupo Disponible</span>
+                                <h2 id="det-saldo-producto" class="monto-grande">$0</h2>
+                            </div>
+                        </div>
+                        <div id="reglas-producto-info" class="reglas-info">
+                            <!-- Reglas informativas del producto -->
+                        </div>
+
+                        <!-- Botones de Operaciones Bancarias -->
+                        <div id="contenedor-botones-operaciones" class="operaciones-grid">
+                            <button onclick="app.abrirModal('modal-consignar')" class="btn btn-accion btn-verde">Consignar</button>
+                            <button onclick="app.abrirModal('modal-retirar')" class="btn btn-accion btn-amarillo">Retirar</button>
+                            <button onclick="app.abrirModal('modal-transferir')" class="btn btn-accion btn-azul">Transferir</button>
+                            <button onclick="app.abrirModal('modal-comprar')" class="btn btn-accion btn-morado" id="btn-comprar-tc">Comprar (TC)</button>
+                        </div>
+                    </div>
+
+                    <!-- Historial de Movimientos -->
+                    <div class="card-historial">
+                        <h3>Historial de Movimientos</h3>
+                        <div class="table-responsive">
+                            <table class="tabla-movimientos">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha y Hora</th>
+                                        <th>Tipo</th>
+                                        <th>Valor</th>
+                                        <th>Detalle / Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-movimientos-body">
+                                    <tr>
+                                        <td colspan="4" class="text-center">Selecciona un producto para ver sus movimientos.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODALES DE OPERACIONES -->
+    <!-- Modal Consignar -->
+    <div id="modal-consignar" class="modal oculto">
+        <div class="modal-content">
+            <h3>Consignar Dinero</h3>
+            <form onsubmit="app.realizarConsignacion(event)">
+                <div class="form-group">
+                    <label>Monto a Consignar ($):</label>
+                    <input type="number" id="monto-consignacion" min="1" step="any" required placeholder="Ej: 50000">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" onclick="app.cerrarModales()" class="btn btn-outline" style="color: var(--texto-principal); border-color: var(--borde-color);">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar Consignación</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Retirar -->
+    <div id="modal-retirar" class="modal oculto">
+        <div class="modal-content">
+            <h3>Retirar Dinero</h3>
+            <p id="info-retiro-regla" class="text-sm text-muted">Ahorros aplica 1.5% de interés al retirar. Corriente permite hasta 20% de sobregiro.</p>
+            <form onsubmit="app.realizarRetiro(event)">
+                <div class="form-group">
+                    <label>Monto a Retirar ($):</label>
+                    <input type="number" id="monto-retiro" min="1" step="any" required placeholder="Ej: 20000">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" onclick="app.cerrarModales()" class="btn btn-outline" style="color: var(--texto-principal); border-color: var(--borde-color);">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar Retiro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Transferir (Mejorado con ayuda de Cuentas Destino) -->
+    <div id="modal-transferir" class="modal oculto">
+        <div class="modal-content">
+            <h3>Transferir Dinero</h3>
+            <form onsubmit="app.realizarTransferencia(event)">
+                <div class="form-group">
+                    <label>Producto Destino (ID de cuenta):</label>
+                    <input type="text" id="trans-destino-id" required placeholder="Ej: CTA-AHO-1234">
+                    <small class="text-muted">Selecciona o escribe el ID exacto del producto destino.</small>
+                </div>
+
+                <!-- GUÍA RÁPIDA DE CUENTAS DISPONIBLES EN EL SISTEMA -->
+                <div class="form-group">
+                    <label>Cuentas disponibles para transferir:</label>
+                    <select id="select-cuentas-destino" class="form-group" style="width:100%; padding: 8px; border-radius:6px; border:1px solid var(--borde-color);" onchange="app.seleccionarCuentaDestinoDesdeSelect(this.value)">
+                        <!-- Se llena dinámicamente -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Monto a Transferir ($):</label>
+                    <input type="number" id="trans-monto" min="1" step="any" required placeholder="Ej: 30000">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" onclick="app.cerrarModales()" class="btn btn-outline" style="color: var(--texto-principal); border-color: var(--borde-color);">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Transferir</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Comprar Tarjeta de Crédito -->
+    <div id="modal-comprar" class="modal oculto">
+        <div class="modal-content">
+            <h3>Realizar Compra con Tarjeta de Crédito</h3>
+            <form onsubmit="app.realizarCompraTC(event)">
+                <div class="form-group">
+                    <label>Valor de la Compra ($):</label>
+                    <input type="number" id="compra-valor" min="1" step="any" required placeholder="Ej: 150000">
+                </div>
+                <div class="form-group">
+                    <label>Número de Cuotas (1 a 36):</label>
+                    <input type="number" id="compra-cuotas" min="1" max="36" required value="1">
+                    <small class="text-muted">0-2 cuotas: 0% | 3-6 cuotas: 1.9% | 7+ cuotas: 2.3% mensual</small>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" onclick="app.cerrarModales()" class="btn btn-outline" style="color: var(--texto-principal); border-color: var(--borde-color);">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Procesar Compra</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Editar Perfil -->
+    <div id="modal-perfil" class="modal oculto">
+        <div class="modal-content">
+            <h3>Editar Perfil de Cliente</h3>
+            <form onsubmit="app.guardarPerfil(event)">
+                <div class="form-group">
+                    <label>Identificación:</label>
+                    <input type="text" id="perfil-id" required>
+                </div>
+                <div class="form-group">
+                    <label>Nombre Completo:</label>
+                    <input type="text" id="perfil-nombre" required>
+                </div>
+                <div class="form-group">
+                    <label>Celular:</label>
+                    <input type="tel" id="perfil-celular" required>
+                </div>
+                <div class="form-group">
+                    <label>Nombre de Usuario:</label>
+                    <input type="text" id="perfil-usuario" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" onclick="app.cerrarModales()" class="btn btn-outline" style="color: var(--texto-principal); border-color: var(--borde-color);">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Cambiar Contraseña -->
+    <div id="modal-password" class="modal oculto">
+        <div class="modal-content">
+            <h3>Cambiar Contraseña</h3>
+            <form onsubmit="app.cambiarPassword(event)">
+                <div class="form-group">
+                    <label>Contraseña Actual:</label>
+                    <input type="password" id="pass-actual" required>
+                </div>
+                <div class="form-group">
+                    <label>Nueva Contraseña:</label>
+                    <input type="password" id="pass-nueva" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirmar Nueva Contraseña:</label>
+                    <input type="password" id="pass-confirmar" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" onclick="app.cerrarModales()" class="btn btn-outline" style="color: var(--texto-principal); border-color: var(--borde-color);">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Actualizar Contraseña</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal CRUD Administrador de Usuarios -->
+    <div id="modal-admin" class="modal oculto">
+        <div class="modal-content modal-lg">
+            <h3>Gestión de Usuarios (CRUD Académico)</h3>
+            <p class="text-sm text-muted">Lista de todos los usuarios registrados en el sistema local.</p>
+            <div class="table-responsive">
+                <table class="tabla-movimientos">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Usuario</th>
+                            <th>Celular</th>
+                            <th>Bloqueado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-admin-body">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-buttons" style="margin-top: 15px;">
+                <button type="button" onclick="app.cerrarModales()" class="btn btn-primary">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENEDOR DE ALERTAS / NOTIFICACIONES -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- ENLACE A SCRIPTS -->
+    <script src="js/modelos.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
